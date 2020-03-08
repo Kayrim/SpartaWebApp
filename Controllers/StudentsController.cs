@@ -29,9 +29,10 @@ namespace SpartaWebApp.Controllers
 
         // GET: api/Students/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Student>> GetStudent(int id)
+        public async Task<ActionResult<IEnumerable<Student>>> GetStudent(int id)
         {
-            var student = await _context.Student.FindAsync(id);
+           // var student = await _context.Student.FindAsync(id);
+            var student =  _context.Student.Include(p => p.Project).Where(p=>p.StudentId == id).ToList();
 
             if (student == null)
             {
