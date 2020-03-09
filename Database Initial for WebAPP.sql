@@ -96,9 +96,9 @@ INSERT INTO Student (FirstName, LastName, CourseID, Bio,University) Values
 ('Stephen','Callum',1,  'I want waves', 'Swansea University'),
 ('Jamie','Benjamin',1,  'I play games with my hands', 'Anglia Ruskin University'),
 ('Hassan','Abdullahi',1, 'I pray 5 times a day', 'Queen Mary'),
-('James','Kavanagh',1,  'I always wonder if asta and isabella are related', 'Not Stem'),
-('Timothy','Wong',1,  'Ooooo I like that', 'Some University'),
-('Jordan','Benbelaid',1, 'I left it on my home computer', 'Some University');
+('James','Kavanagh',1,  'Wish I was as good as Jamie, Karim and Stephen', 'University of Kent'),
+('Timothy','Wong',1,  'Ooooo I like that', 'Brunel University'),
+('Jordan','Benbelaid',1, 'I left it on my home computer', 'Brunel University');
 
 go
 
