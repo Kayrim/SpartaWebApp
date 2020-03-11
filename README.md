@@ -59,7 +59,7 @@ Add additional notes about how to deploy this on a live system
 
 * **Stephen Callum** [Github](https://github.com/Stephen-Callum)
 * **Karim Bakkali** [Github](https://github.com/Kayrim)
-* **Jaime Benjamin** [Github](https://github.com/jamieb97)
+* **Jamie Benjamin** [Github](https://github.com/jamieb97)
 
 ## License
 
