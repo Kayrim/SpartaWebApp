@@ -2,44 +2,53 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SpartaWebApp.DTO_Models;
 using SpartaWebApp.Models;
+using SpartaWebApp.Services;
 
 namespace SpartaWebApp.Controllers
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class StudentsController : ControllerBase
     {
         private readonly SpartaDBContext _context;
+        private readonly IStudentRepo _studentRepo;
+        private readonly IMapper _mapper;
 
-        public StudentsController(SpartaDBContext context)
+        public StudentsController(SpartaDBContext context, IStudentRepo studentRepo,IMapper mapper)
         {
             _context = context;
+            _studentRepo = studentRepo;
+            _mapper = mapper;
         }
 
         // GET: api/Students
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
         {
-            return await _context.Student.ToListAsync();
+            return await _context.Student.Include(p => p.Project).ToListAsync();
         }
 
         // GET: api/Students/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudent(int id)
+        public async Task<ActionResult<IEnumerable<StudentsWithProjectsDto>>> GetStudent(int id)
         {
-           // var student = await _context.Student.FindAsync(id);
-            var student =  _context.Student.Include(p => p.Project).Where(p=>p.StudentId == id).ToList();
+            // var student = await _context.Student.FindAsync(id);
+            var student = await _studentRepo.GetSingleStudentWithProjects(id);
 
             if (student == null)
             {
                 return NotFound();
             }
 
-            return student;
+            return Ok( _mapper.Map<StudentsWithProjectsDto>(student));
         }
 
         // PUT: api/Students/5

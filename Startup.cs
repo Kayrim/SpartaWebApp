@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SpartaWebApp.Models;
+using AutoMapper;
+using SpartaWebApp.Services;
 
 namespace SpartaWebApp
 {
@@ -28,8 +30,12 @@ namespace SpartaWebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors();
             services.AddControllers().AddNewtonsoftJson(o => o.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
-            services.AddDbContext<SpartaDBContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SpartaDB"))); 
+            services.AddDbContext<SpartaDBContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SpartaDB")));
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IStudentRepo, StudentRepo>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -39,17 +45,16 @@ namespace SpartaWebApp
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
-
+            app.UseCors(
+            options => options.WithOrigins("http://localhost:3000").AllowAnyMethod());
+            app.UseHttpsRedirection();           
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
         }
+
     }
 }
