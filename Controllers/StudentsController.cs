@@ -22,7 +22,7 @@ namespace SpartaWebApp.Controllers
         private readonly IStudentRepo _studentRepo;
         private readonly IMapper _mapper;
 
-        public StudentsController(SpartaDBContext context, IStudentRepo studentRepo,IMapper mapper)
+        public StudentsController(SpartaDBContext context, IStudentRepo studentRepo, IMapper mapper)
         {
             _context = context;
             _studentRepo = studentRepo;
@@ -31,9 +31,11 @@ namespace SpartaWebApp.Controllers
 
         // GET: api/Students
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Student>>> GetStudent()
+        public async Task<ActionResult<IEnumerable<StudentsWithProjectsDto>>> GetStudent()
         {
-            return await _context.Student.Include(p => p.Project).ToListAsync();
+            var students = await _studentRepo.GetStudentsWithProjects();
+
+            return Ok(_mapper.Map<IEnumerable<StudentsWithProjectsDto>>(students));
         }
 
         // GET: api/Students/5
@@ -48,7 +50,7 @@ namespace SpartaWebApp.Controllers
                 return NotFound();
             }
 
-            return Ok( _mapper.Map<StudentsWithProjectsDto>(student));
+            return Ok(_mapper.Map<StudentsWithProjectsDto>(student));
         }
 
         // PUT: api/Students/5

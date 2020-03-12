@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace SpartaWebApp.Profiles
 {
-    public class ProjectProfile : Profile
+    public class StudentProfile : Profile
     {
-        public ProjectProfile()
+        public StudentProfile()
         {
 
             CreateMap<Student, StudentsWithProjectsDto>();

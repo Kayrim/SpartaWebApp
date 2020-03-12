@@ -65,9 +65,10 @@ CREATE TABLE Project (
 go
 
 CREATE TABLE TrainerCourses (
-    TCID int not null primary key identity,
-    CourseID int foreign key references Course(CourseID),
-    TrainerID int foreign key references Trainer(TrainerID)
+  
+    TrainerID int foreign key references Trainer(TrainerID) NOT NULL,
+    CourseID int foreign key references Course(CourseID) NOT NULL,
+	Primary Key (CourseID, TrainerID)
 
 );
 
@@ -80,7 +81,9 @@ INSERT INTO Category Values
 go
 
 INSERT INTO Trainer (FirstName,LastName,Bio) Values
-('Phil', 'Anderson' ,'I love Ketchup');
+('Phil', 'Anderson' ,'I love Ketchup'),
+('Markson', 'Jackson', 'okay'),
+('Jim', 'Bob', 'Huh?');
 
 go
 
@@ -112,7 +115,14 @@ INSERT INTO Project (StudentID,ProjectName,ProjectDescription) Values
 go
 
 INSERT INTO TrainerCourses  Values
-(1,1);
+(1,1),
+(1,2),
+(2,2),
+(2,3),
+(3,1),
+(3,3);
+
+
 
 
 

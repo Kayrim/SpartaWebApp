@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace SpartaWebApp.Services
 {
-    public interface IStudentRepo 
+    public interface IStudentRepo
     {
 
-        public IEnumerable<Student> GetStudentsWithProjects();
+        public Task<IEnumerable<Student>> GetStudentsWithProjects();
 
-        public Task <Student> GetSingleStudentWithProjects(int studentId);
+        public Task<Student> GetSingleStudentWithProjects(int studentId);
     }
 }

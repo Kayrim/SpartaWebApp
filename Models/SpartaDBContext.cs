@@ -22,7 +22,14 @@ namespace SpartaWebApp.Models
         public virtual DbSet<Trainer> Trainer { get; set; }
         public virtual DbSet<TrainerCourses> TrainerCourses { get; set; }
 
-        
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=SpartaDB;Integrated Security=True;");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -134,10 +141,8 @@ namespace SpartaWebApp.Models
 
             modelBuilder.Entity<TrainerCourses>(entity =>
             {
-                entity.HasKey(e => e.Tcid)
-                    .HasName("PK__TrainerC__B773707F6E84A432");
-
-                entity.Property(e => e.Tcid).HasColumnName("TCID");
+                entity.HasKey(e => new { e.CourseId, e.TrainerId })
+                    .HasName("PK__TrainerC__1A4BD03E05AA5829");
 
                 entity.Property(e => e.CourseId).HasColumnName("CourseID");
 
@@ -146,12 +151,14 @@ namespace SpartaWebApp.Models
                 entity.HasOne(d => d.Course)
                     .WithMany(p => p.TrainerCourses)
                     .HasForeignKey(d => d.CourseId)
-                    .HasConstraintName("FK__TrainerCo__Cours__300424B4");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TrainerCo__Cours__30F848ED");
 
                 entity.HasOne(d => d.Trainer)
                     .WithMany(p => p.TrainerCourses)
                     .HasForeignKey(d => d.TrainerId)
-                    .HasConstraintName("FK__TrainerCo__Train__30F848ED");
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__TrainerCo__Train__300424B4");
             });
 
             OnModelCreatingPartial(modelBuilder);

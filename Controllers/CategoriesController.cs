@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SpartaWebApp.Models;
+using SpartaWebApp.Services;
 
 namespace SpartaWebApp.Controllers
 {
@@ -14,17 +16,23 @@ namespace SpartaWebApp.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly SpartaDBContext _context;
+        private readonly IMapper _mapper;
+        private readonly ICategoryRepo _categoryRepo;
 
-        public CategoriesController(SpartaDBContext context)
+        public CategoriesController(SpartaDBContext context, ICategoryRepo categoryRepo, IMapper mapper)
         {
+            _mapper = mapper;
+            _categoryRepo = categoryRepo;
             _context = context;
         }
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Category>>> GetCategory()
+        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategory()
         {
-            return await _context.Category.ToListAsync();
+            var cat = await _categoryRepo.GetCategoryWithCourses();
+
+            return Ok(_mapper.Map<IEnumerable<CategoryDto>>(cat));
         }
 
         // GET: api/Categories/5

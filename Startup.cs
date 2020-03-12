@@ -35,6 +35,7 @@ namespace SpartaWebApp
             services.AddDbContext<SpartaDBContext>(o => o.UseSqlServer(Configuration.GetConnectionString("SpartaDB")));
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IStudentRepo, StudentRepo>();
+            services.AddScoped<ICategoryRepo, CategoryRepo>();
 
         }
 
@@ -47,7 +48,7 @@ namespace SpartaWebApp
             }
             app.UseCors(
             options => options.WithOrigins("http://localhost:3000").AllowAnyMethod());
-            app.UseHttpsRedirection();           
+            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

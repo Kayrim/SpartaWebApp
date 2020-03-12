@@ -12,21 +12,19 @@ namespace SpartaWebApp.Services
     public class StudentRepo : IStudentRepo
     {
         private readonly SpartaDBContext _context;
-        private readonly IMapper _mapper;
 
-        public StudentRepo(SpartaDBContext context, IMapper mapper)
+        public StudentRepo(SpartaDBContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
-        public async Task <Student> GetSingleStudentWithProjects(int studentID)
+        public async Task<Student> GetSingleStudentWithProjects(int studentID)
         {
             return await _context.Student.Include(p => p.Project).Where(p => p.StudentId == studentID).FirstOrDefaultAsync();
         }
 
-        public IEnumerable<Student> GetStudentsWithProjects()
+        public async Task<IEnumerable<Student>> GetStudentsWithProjects()
         {
-            throw new NotImplementedException();
+            return await _context.Student.Include(p => p.Project).ToListAsync();
         }
     }
 }
